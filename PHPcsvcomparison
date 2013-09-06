@@ -1,0 +1,72 @@
+<? include("../includes/standard.php");
+
+function strip_defines($directory)
+{	
+	$ret = array();
+	//initialises directory
+	$dir = dir($directory);
+	
+	while (($file = $dir->read()) !== false)
+	{	
+	//gets rid of any files beginning with "." or ".."
+		if ($file!="." && $file!="..")
+		{	
+		//adding data to array
+			$raw = file_get_contents($directory.$file);
+			
+			$lines = explode("\n", $raw);
+			
+			foreach ($lines as $line)
+			{	
+				$line = trim($line);
+				//filters out any lines not wanted in the array
+				if ($line!="" && $line[0]!="#" && $line[1]!="/")
+				{	
+					$blah = array();
+					preg_match('#define\\(\"(.*)\",([ ]?)\"(.*)\"#', $line, $blah);
+					if (isset($blah[1]))
+					{	
+						$ret[$blah[1]] = $blah[3];
+					}
+				}
+			}
+		}
+		
+	}
+		
+	return $ret;
+}
+//enters UK array info into separate array to compare 
+$uk = strip_defines("ENTER FILE PATH HERE");
+$uk_lang_defines = array_keys($uk);
+
+//enters Germany array info into separate array to compare
+$de = strip_defines("ENTER FILE PATH HERE");
+$de_lang_defines = array_keys($de);
+
+//compares and returns value that are present in UK but not Germany
+$compare = array_diff($uk_lang_defines, $de_lang_defines);
+
+$csv = array();
+//NOTE ON FOREACH LOOPS ------ 1st VALUE REFERENCES EXISITING ARRAY 2nd VALUE IS NEWLY CREATED HERE
+//NEW ARRAY IS CREATED HERE BY NAMING IT AND REFERENCING 2nd VALUE, THEN THE INDEX OF THE DESIRED ARRAY
+
+	foreach($compare as $ukvalue)
+	{	
+		$csv[] = array($ukvalue, $uk[$ukvalue]);
+	}
+
+//OPEN FILE STREAM TO LANG.CSV
+
+$Delimiter = '"';
+$Separator = ',';
+$File = fopen('lang2.csv' , 'w+');
+
+	foreach($csv as $Line)
+	{  
+//WRITE $CSV TO FILE 
+		fwrite($File, $Delimiter.
+        implode($Delimiter.$Separator.$Delimiter, $Line).$Delimiter."\n");
+	}
+
+?>
