@@ -1,4 +1,10 @@
-<? include("../includes/standard.php");
+<?php
+
+/* 
+	Script compares any text that appears in 1 folder but not the other
+	outputs the result to a csv file
+	
+*/	
 
 function strip_defines($directory)
 {	
@@ -36,35 +42,31 @@ function strip_defines($directory)
 		
 	return $ret;
 }
-//enters UK array info into separate array to compare 
-$uk = strip_defines("ENTER FILE PATH HERE");
-$uk_lang_defines = array_keys($uk);
 
-//enters Germany array info into separate array to compare
-$de = strip_defines("ENTER FILE PATH HERE");
-$de_lang_defines = array_keys($de);
+$fizz = strip_defines("ENTER FILE PATH HERE");
+$fizz_lang_defines = array_keys($fizz);
 
-//compares and returns value that are present in UK but not Germany
-$compare = array_diff($uk_lang_defines, $de_lang_defines);
+$buzz = strip_defines("ENTER FILE PATH HERE");
+$buzz_lang_defines = array_keys($buzz);
+
+//Compares and returns any values that are present in $uk and not in $de
+$compare = array_diff($fizz_lang_defines, $buzz_lang_defines);
 
 $csv = array();
-//NOTE ON FOREACH LOOPS ------ 1st VALUE REFERENCES EXISITING ARRAY 2nd VALUE IS NEWLY CREATED HERE
-//NEW ARRAY IS CREATED HERE BY NAMING IT AND REFERENCING 2nd VALUE, THEN THE INDEX OF THE DESIRED ARRAY
 
-	foreach($compare as $ukvalue)
+	foreach($compare as $value)
 	{	
-		$csv[] = array($ukvalue, $uk[$ukvalue]);
+		$csv[] = array($value, $fizz[$value]);
 	}
-
-//OPEN FILE STREAM TO LANG.CSV
 
 $Delimiter = '"';
 $Separator = ',';
-$File = fopen('lang2.csv' , 'w+');
+$File = fopen('file.csv' , 'w+');
 
 	foreach($csv as $Line)
 	{  
-//WRITE $CSV TO FILE 
+	//WRITE $CSV TO FILE 
+	
 		fwrite($File, $Delimiter.
         implode($Delimiter.$Separator.$Delimiter, $Line).$Delimiter."\n");
 	}
