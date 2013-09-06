@@ -2,7 +2,7 @@
 
 	Vanilla javascript word count function. Counts words based on the whitespace between words. 
 	Just as easy to-do in jQuery but this way uses less resources. 
-	
+	Works best with onkeyup():
 	
 	*/
 	
