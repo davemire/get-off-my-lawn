@@ -25,16 +25,6 @@ function strip_defines($directory)
 			foreach ($lines as $line)
 			{	
 				$line = trim($line);
-				//filters out any lines not wanted in the array
-				if ($line!="" && $line[0]!="#" && $line[1]!="/")
-				{	
-					$blah = array();
-					preg_match('#define\\(\"(.*)\",([ ]?)\"(.*)\"#', $line, $blah);
-					if (isset($blah[1]))
-					{	
-						$ret[$blah[1]] = $blah[3];
-					}
-				}
 			}
 		}
 		
@@ -49,7 +39,7 @@ $fizz_lang_defines = array_keys($fizz);
 $buzz = strip_defines("ENTER FILE PATH HERE");
 $buzz_lang_defines = array_keys($buzz);
 
-//Compares and returns any values that are present in $uk and not in $de
+//Compares and returns any values
 $compare = array_diff($fizz_lang_defines, $buzz_lang_defines);
 
 $csv = array();
