@@ -1,0 +1,67 @@
+<? /* PR Starts 
+
+	Code for JS word count
+	
+	Need to enter minimum number of words before able to submit
+	Across BOTH text fields 'COMMENT_PRO' + 'COMMENT_NEG'
+	Count words based on the amount of spaces
+	div class ="field"
+
+	id for each field is #id_COMMENT_PRO and #id_COMMENT_NEG
+	on keyup() 
+	set var num = 100 
+	on each keypress evaluate the length and - that from var num
+	
+	create <p> id and alter text with "var num". remaining
+	
+	
+	doesn't account for existing default text, trying a simple focus(function()) destroys the text from all 3 textareas before user even clicks on it..
+	
+	text doesn't need to be cleared, it already gets cleared on focus anyway... need to count only on focus?
+	
+	write a regex to replace ! , . with a space to force reviews with shit grammar to be counted
+	
+	
+	*/
+	
+?>	
+
+function wordCount() 
+{
+ 	var num = 100;
+	var proWords = document.getElementById('id_COMMENT_PRO').value;
+	var text = document.getElementById('count');
+	var posWords = proWords.replace(/[!?\,\.\s]+/g,' ');
+	var proArr = posWords.split(" ");
+	
+<? #	var negWords = document.getElementById('id_COMMENT_NEG').value; ?>
+<? #	var badWords = negWords.replace(/[!?\,\.\s]+/g,' '); ?>
+<? //strips out dbl spaces, punctuation and replaces with single space ?>
+<? #	var negArr = badWords.split(" "); ?>
+
+	pArr = proArr.filter(Boolean);
+<? #nArr = negArr.filter(Boolean); ?>	
+<? //removes all empty array elements ?>
+	
+	if (proWords !== "<?=txt("LANG_WHATDIDYOUTHINK","What did you think about the product?"); ?>")
+	{
+		num -= pArr.length;
+	}
+<? //removes default text from the counter ?>
+
+<? /*  if (negWords !== "What didn't you like about the product?") {
+        num -= nArr.length;
+    }
+	*/ 
+?>
+	if (num <= 0)
+	{
+		num = 0;
+		document.getElementById('count').style.visibility="hidden";
+	} else <? //hides the word count when it reaches 0 ?>
+	{
+		document.getElementById('count').style.visibility="visible";
+	}
+	
+	text.innerHTML = "<?=txt("LANG_WORDSLEFT","Words left")?>: " + num;
+}
