@@ -14,7 +14,7 @@ function wordCount()
  	var num = 100;
  	
  	//the name of the textarea
-	var proWords = document.getElementById('id_COMMENT_PRO').value;
+	var proWords = document.getElementById('ID OF DIV').value;
 	
 	//the name of the element where the word count will appear
 	var text = document.getElementById('count');
@@ -26,7 +26,7 @@ function wordCount()
 	
 	pArr = proArr.filter(Boolean);
 
-	if (proWords !== "What did you think about the product?")
+	if (proWords !== "Default text bla blah")
 	{
 		num -= pArr.length;
 	}
